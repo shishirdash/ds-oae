@@ -4,13 +4,12 @@ import pandas as pd
 import plotly.io as pio
 import plotly.graph_objects as go
 
-app = Dash(__name__)
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+app = Dash(__name__, external_stylesheets=external_stylesheets)
 
-# assume you have a "long-form" data frame
-# see https://plotly.com/python/px-arguments/ for more options
+server = app.server
 
-
-# No need to pass "layer='etc'" if there's only one layer
+# Data for outfall locations
 df = []
 locs = {'type': 'FeatureCollection', 'features': []}
 with fiona.open('../WastewaterOutfall.gpkg') as layer:
@@ -54,7 +53,7 @@ app.layout = html.Div(children=[
     html.H1(children='Dashboard for OAE visuals'),
 
     html.Div(children=''' 
-        Wastewater outfall locations       
+        Wastewater outfall locations (Red = Major, Blue = Minor)
     '''),
 
     dcc.Graph(
